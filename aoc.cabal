@@ -1,0 +1,31 @@
+cabal-version:      3.4
+name:               aoc
+version:            0.1.0.0
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Kai-Oliver Prott
+maintainer:         kai.prott@hotmail.de
+build-type:         Simple
+category:           Game
+synopsis:           Advent of Code 2022
+description:        My solutions for the Advent of Code 2022
+
+source-repository head
+    type:     git
+    location: git@github.com:Ziharrk/aoc2022.git
+
+common warnings
+    ghc-options: -Wall
+
+executable aoc
+    import:           warnings
+    main-is:          Main.hs
+    other-modules:    Day1,
+                      Day2,
+                      Day3,
+    build-depends:    base    >= 4.15 && < 4.18,
+                      parsec  >= 3.1 && < 4.0,
+                      text    >= 1.2 && < 2.1,
+    hs-source-dirs:   src
+    default-language: GHC2021
+    other-extensions: MultiWayIf
