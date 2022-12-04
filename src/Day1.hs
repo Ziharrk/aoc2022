@@ -11,7 +11,7 @@ newtype Inventory = Inventory [Int]
 mkInventory :: [Int] -> Inventory
 mkInventory = Inventory
 
-type Parser a = Parsec Text () a
+type Parser = Parsec Text ()
 
 item :: Parser Int
 item = read <$> ((:) <$> digit <*> manyTill digit newline)

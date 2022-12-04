@@ -19,7 +19,7 @@ data Rucksack = Rucksack [Item] [Item]
 mkRucksack :: [Item] -> Rucksack
 mkRucksack xs = uncurry Rucksack $ splitAt (length xs `div` 2) xs
 
-type Parser a = Parsec Text () a
+type Parser = Parsec Text ()
 
 parseItem :: Parser Item
 parseItem = mkItem <$> letter

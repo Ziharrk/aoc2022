@@ -8,7 +8,7 @@ data Move = Rock | Paper | Scissors
 
 data Strategy = Strategy Move Move
 
-type Parser a = Parsec Text () a
+type Parser = Parsec Text ()
 
 strategy :: Parser Strategy
 strategy = Strategy <$> enemy <* space <*> mine <* newline
