@@ -26,10 +26,11 @@ executable aoc
                       Day3,
                       Day4,
                       Day5,
-    build-depends:    base    >= 4.15 && < 4.18,
-                      parsec  >= 3.1 && < 4.0,
-                      text    >= 1.2 && < 2.1,
-                      template-haskell    >= 2.15 && < 3,
+                      Day6,
+    build-depends:    base             >= 4.15 && < 4.18,
+                      parsec           >= 3.1  && < 4.0,
+                      text             >= 1.2  && < 2.1,
+                      template-haskell >= 2.15 && < 3,
     hs-source-dirs:   src
     default-language: GHC2021
     other-extensions: MultiWayIf
