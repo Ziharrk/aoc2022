@@ -7,6 +7,8 @@ import Data.Text (Text)
 import Text.Parsec (letter, newline, manyTill, many, Parsec)
 import Text.Parsec.Text (parseFromFile)
 
+import Tuple (Tuple(..))
+
 newtype Item = Item { unItem :: Int }
   deriving Eq
 
@@ -17,7 +19,7 @@ mkItem x | isUpper x = Item $ fromEnum x - 65 + 27
 data Rucksack = Rucksack [Item] [Item]
 
 mkRucksack :: [Item] -> Rucksack
-mkRucksack xs = uncurry Rucksack $ splitAt (length xs `div` 2) xs
+mkRucksack xs = Tuple.uncurry Rucksack $ splitAt (length xs `div` 2) xs
 
 type Parser = Parsec Text ()
 

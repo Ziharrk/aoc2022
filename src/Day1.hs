@@ -22,9 +22,6 @@ inventory = mkInventory <$> many item
 rations :: Parser [Inventory]
 rations = inventory `sepBy` newline
 
-uncurry3 :: (a -> b -> c -> d) -> (a, b, c) -> d
-uncurry3 f (a, b, c) = f a b c
-
 biggestInventory :: [Inventory] -> (Int, Int, Int)
 biggestInventory = foldl' (\(acc1, acc2, acc3) (Inventory is) ->
     let x = sum is
