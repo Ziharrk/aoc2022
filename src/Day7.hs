@@ -26,9 +26,7 @@ purifyTree (FileTree dirs files) = do
   files' <- readIORef files
   FileTree <$> mapM purifyTree dirs' <*> pure files'
 
-type StateIO m = StateT m IO
-
-getCmd :: StateIO [String] (Maybe String)
+getCmd :: StateT [String] IO (Maybe String)
 getCmd = do
   res <- gets listToMaybe
   modify (drop 1)
