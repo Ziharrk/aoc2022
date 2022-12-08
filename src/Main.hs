@@ -7,6 +7,7 @@ import Day4 (day4)
 import Day5 (day5)
 import Day6 (day6)
 import Day7 (day7)
+import Day8 (day8)
 
 main :: IO ()
 main = do
@@ -20,4 +21,5 @@ main = do
         "5" -> day5
         "6" -> day6
         "7" -> day7
+        "8" -> day8
         _   -> putStrLn "Invalid day"
