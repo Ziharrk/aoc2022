@@ -29,6 +29,7 @@ executable aoc
                       Day6,
                       Day7,
                       Day8,
+                      Day9,
     build-depends:    base             >= 4.15 && < 4.18,
                       parsec           >= 3.1  && < 4.0,
                       text             >= 1.2  && < 2.1,
@@ -36,6 +37,7 @@ executable aoc
                       mtl              >= 2.1  && < 2.4,
                       containers       >= 0.5  && < 1.0,
                       extra            >= 1.5  && < 2.0,
+                      vector           >= 0.12 && < 0.14,
     hs-source-dirs:   src
     default-language: GHC2021
     other-extensions: MultiWayIf
