@@ -1,5 +1,7 @@
 module Main where
 
+import Data.List.Extra ((!?))
+
 import Day1 (day1)
 import Day2 (day2)
 import Day3 (day3)
@@ -14,22 +16,19 @@ import Day11 (day11)
 import Day12 (day12)
 import Day13 (day13)
 
+allDays :: [IO ()]
+allDays =
+    [ day1, day2, day3, day4, day5
+    , day6, day7, day8, day9, day10
+    , day11, day12, day13
+    ]
+
 main :: IO ()
 main = do
     putStrLn "Which day?"
     input <- getLine
-    case input of
-        "1" -> day1
-        "2" -> day2
-        "3" -> day3
-        "4" -> day4
-        "5" -> day5
-        "6" -> day6
-        "7" -> day7
-        "8" -> day8
-        "9" -> day9
-        "10" -> day10
-        "11" -> day11
-        "12" -> day12
-        "13" -> day13
+    case reads input of
+        [(n, "")] -> case allDays !? (n - 1) of
+            Just day -> day
+            Nothing  -> putStrLn "Day not implemented yet"
         _   -> putStrLn "Invalid day"
