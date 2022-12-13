@@ -28,7 +28,9 @@ main = do
     putStrLn "Which day?"
     input <- getLine
     case reads input of
-        [(n, "")] -> case allDays !? (n - 1) of
-            Just day -> day
-            Nothing  -> putStrLn "Day not implemented yet"
-        _   -> putStrLn "Invalid day"
+        [(n, "")]
+            | n >= 1 && n <= 24 ->
+                case allDays !? (n - 1) of
+                    Just day -> day
+                    Nothing  -> putStrLn "Day not implemented yet"
+        _   -> putStrLn "Invalid day! It has to be a number between 1 and 24."
