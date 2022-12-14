@@ -55,7 +55,7 @@ simulateWithBottom maxX maxY paths = simulate newX newY (newPath:paths)
     newPath = MkPath [(0, newY-1), (newX-1, newY-1)]
     -- assumes that maxX is at least wide enough to catch the spill
     -- to the left of the spawn point
-    newX = maximum [maxX, maxX + newY]
+    newX = maxX + newY
     newY = maxY + 2
 
 day14 :: IO ()
