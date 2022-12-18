@@ -1,6 +1,7 @@
 module Main where
 
 import Data.List.Extra ((!?))
+import System.IO (hSetBuffering, stdin, stdout, BufferMode(..))
 
 import Day1 (day1)
 import Day2 (day2)
@@ -32,6 +33,8 @@ main :: IO ()
 main = do
     putStrLn "Which day?"
     input <- getLine
+    hSetBuffering stdin  LineBuffering
+    hSetBuffering stdout NoBuffering
     case reads input of
         [(n, "")]
             | n >= 1 && n <= 24 ->
