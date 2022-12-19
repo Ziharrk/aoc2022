@@ -6,8 +6,6 @@ import Data.Text (Text)
 import Text.Parsec (Parsec, string, newline, many1, digit)
 import Text.Parsec.Text (parseFromFile)
 
-import Debug.Trace
-
 data FactoryBlueprint = FactoryBlueprint Int (Map MaterialType Robot)
 
 data Robot = Robot {
@@ -46,9 +44,9 @@ parseBlueprint = do
 int :: Parsec Text () Int
 int = read <$> many1 digit
 
-evaluateBlueprint :: Int -> FactoryBlueprint -> Int
+evaluateBlueprint :: Int -> FactoryBlueprint -> (Int, Int)
 evaluateBlueprint t (FactoryBlueprint n blueprints) =
-  n * go t Map.empty (Map.singleton Ore 1)
+  (n, go t Map.empty (Map.singleton Ore 1))
   where
     maxOreCost  = maximum $ map (negate . Map.findWithDefault 0 Ore . robotCosts) $ Map.elems blueprints
     maxClayCost = maximum $ map (negate . Map.findWithDefault 0 Clay . robotCosts) $ Map.elems blueprints
@@ -69,7 +67,7 @@ evaluateBlueprint t (FactoryBlueprint n blueprints) =
           [ go (time - 1) matsCollect bots'
           | typ <- [Ore, Clay, Obsidian, Geode]
           , let (b, matsConstruct) = optimizationConstraint Map.! typ
-          , flip const (show typ ++ " " ++ show mats ++ " " ++ show b) b
+          , b
           , all (>= 0) matsConstruct
           , let matsCollect = Map.unionWith (+) matsConstruct bots
           , let bots' = Map.insertWith (+) typ 1 bots
@@ -97,8 +95,8 @@ day19 = do
       let evaluated = map (evaluateBlueprint 24) blueprints
       print evaluated
       putStr "Part 1: "
-      print (sum evaluated)
-      let evaluated2 = zipWith (\b n -> evaluateBlueprint 32 b `div` n) blueprints [1, 2, 3]
+      print (sum (map (uncurry (*)) evaluated))
+      let evaluated2 = map (evaluateBlueprint 32) (take 3 blueprints)
       print evaluated2
       putStr "Part 2: "
-      print (product evaluated2)
+      print (product (map snd evaluated2))
