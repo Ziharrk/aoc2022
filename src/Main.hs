@@ -22,13 +22,14 @@ import Day16 (day16)
 import Day17 (day17)
 import Day18 (day18)
 import Day19 (day19)
+import Day20 (day20)
 
 allDays :: [IO ()]
 allDays =
     [ day1, day2, day3, day4, day5
     , day6, day7, day8, day9, day10
     , day11, day12, day13, day14, day15
-    , day16, day17, day18, day19
+    , day16, day17, day18, day19, day20
     ]
 
 main :: IO ()
