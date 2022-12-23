@@ -1,7 +1,6 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE OverloadedRecordDot #-}
-{-# LANGUAGE DataKinds #-}
 module Day18 where
 
 import Data.Foldable (foldr')

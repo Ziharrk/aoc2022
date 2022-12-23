@@ -58,4 +58,8 @@ executable aoc
                       parallel         >= 3.2  && < 4.0,
     hs-source-dirs:   src
     default-language: GHC2021
-    other-extensions: MultiWayIf
+    other-extensions: MultiWayIf,
+                      TypeFamilies,
+                      LambdaCase,
+                      DeriveAnyClass,
+                      OverloadedRecordDot
