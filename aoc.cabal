@@ -43,6 +43,7 @@ executable aoc
                       Day20,
                       Day21,
                       Day22,
+                      Day23,
     build-depends:    base             >= 4.15 && < 4.18,
                       parsec           >= 3.1  && < 4.0,
                       text             >= 1.2  && < 2.1,
