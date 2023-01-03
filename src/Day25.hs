@@ -1,6 +1,8 @@
 {-# LANGUAGE DerivingStrategies #-}
 module Day25 where
 
+{-# ANN module "HLINT: ignore Evaluate" #-}
+
 newtype SNAFU = SNAFU Int
   deriving newtype (Eq, Ord, Bounded, Num, Enum, Real, Integral)
 

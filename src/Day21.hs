@@ -83,6 +83,6 @@ day21 = do
         Just n  -> print n
       putStr "Part 2: "
       let sol = solveRiddle monkeyMap
-      case checkRiddle monkeyMap sol of
-        False -> print "Riddle solution incorrect"
-        True  -> print sol
+      if checkRiddle monkeyMap sol
+        then print sol
+        else print "Riddle solution incorrect"

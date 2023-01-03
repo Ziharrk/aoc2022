@@ -1,5 +1,6 @@
 module Day13 where
 
+import Data.Bifunctor (first)
 import Data.List (groupBy, sort, findIndices)
 
 data ListOrInt = ListOrInt [ListOrInt] | Int Int
@@ -17,8 +18,8 @@ instance Ord ListOrInt where
 
 instance Read ListOrInt where
   readsPrec :: Int -> String -> [(ListOrInt, String)]
-  readsPrec _ xs@('[':_) = map (\(a, b) -> (ListOrInt a, b)) (reads xs)
-  readsPrec _ xs = map (\(a, b) -> (Int a, b)) (reads xs)
+  readsPrec _ xs@('[':_) = map (first ListOrInt) (reads xs)
+  readsPrec _ xs = map (first Int) (reads xs)
 
 tuple :: [a] -> (a, a)
 tuple [x, y] = (x, y)
@@ -29,8 +30,7 @@ untuple (x, y) = [x, y]
 
 day13 :: IO ()
 day13 = do
-  input <- map tuple
-            . map (map read)
+  input <- map (tuple . map read)
             . filter ((== 2) . length)
             . groupBy (\x y -> null x == null y)
             . lines

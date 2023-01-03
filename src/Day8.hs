@@ -40,9 +40,9 @@ getScenicScore (maxX, maxY) xs =
           | (_, h) <- xs !! xCoord !! yCoord
           , h < height = getScore (n + 1) rest
           | otherwise  = n + 1
-    constCoord a _ = [a]
-    negCoord   a _ = enumFromThenTo (a - 1) (a - 2) 0
-    posCoord   a b = enumFromThenTo (a + 1) (a + 2) b
+    constCoord a = const [a]
+    negCoord   a = const $ enumFromThenTo (a - 1) (a - 2) 0
+    posCoord   a = enumFromThenTo (a + 1) (a + 2)
     getUpScenicScore = getGenericScenicScore posCoord constCoord
     getDownScenicScore = getGenericScenicScore negCoord constCoord
     getLeftScenicScore = getGenericScenicScore constCoord posCoord

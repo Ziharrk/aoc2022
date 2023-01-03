@@ -20,9 +20,9 @@ type Item = Int
 
 type FastItem = [Int]
 
-monkeyBusiness :: (a -> a) -> Integer -> [(Monkey a)] -> Integer
+monkeyBusiness :: (a -> a) -> Integer -> [Monkey a] -> Integer
 monkeyBusiness worryModifier rounds mks =
-  foldr (*) 1 $ take 2 $ sortOn Down $
+  product $ take 2 $ sortOn Down $
   -- records all monkeys throw count
   runST (Vector.thaw (fromList mks) >>= go rounds)
   where
@@ -73,8 +73,8 @@ parseOperation = do
         '*' -> (*)
         _   -> error "Invalid operation"
   _ <- space
-  ((\xs -> \old -> old `op` read xs) <$> many1 digit)
-    <|> (const (\old -> old `op` old) <$> string "old")
+  ((\xs old -> old `op` read xs) <$> many1 digit)
+    <|> ((\old -> old `op` old) <$ string "old")
 
 parseTest :: Parser (Int, Int, Int, Int -> Int)
 parseTest = do
@@ -84,7 +84,7 @@ parseTest = do
   targetT <- read <$> many1 digit
   _ <- newline >> string "    If false: throw to monkey "
   targetF <- read <$> many1 digit
-  let test = \x -> if x `mod` divisor == 0 then targetT else targetF
+  let test x = if x `mod` divisor == 0 then targetT else targetF
   return (divisor, targetT, targetF, test)
 
 parseMonkey :: Parser (Monkey Item)
@@ -94,8 +94,7 @@ parseMonkey = do
   _ <- newline
   op <- parseOperation
   _ <- newline
-  test <- parseTest
-  return $ MkMonkey items op test
+  MkMonkey items op <$> parseTest
 
 day11 :: IO ()
 day11 = do

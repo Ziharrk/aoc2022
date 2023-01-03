@@ -26,7 +26,10 @@ mkGraph input = do
       mkAllNodes (x:xs) = (:) <$> mkNodes x <*> mkAllNodes xs
       mkNodes [] = return []
       mkNodes (c:cs) = do
-        let heigth = if c == 'E' then 25 else if c == 'S' then 0 else fromEnum c - fromEnum 'a'
+        let heigth
+              | c == 'E'  = 25
+              | c == 'S'  = 0
+              | otherwise = fromEnum c - fromEnum 'a'
         (:) <$> mkNode (c == 'E') (c == 'S') heigth <*> mkNodes cs
   curNodes <- mkAllNodes input
 

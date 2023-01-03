@@ -21,7 +21,7 @@ parseData = MkData <$>
   (string "; tunnel" *> optional (char 's') *>
     string " lead" *> optional (char 's') *>
     string " to valve" *> optional (char 's') *>
-    space *> valve `sepBy1` (string ", "))
+    space *> valve `sepBy1` string ", ")
   where
     valveCodeToInt a b = fromEnum a - fromEnum 'A' +
       26 * (fromEnum b - fromEnum 'A')
@@ -57,7 +57,7 @@ potential :: Int -> Map.IntMap () -> Map.IntMap SensorData -> [(Maybe Int, Senso
 potential rnd visMap dataMap actors =
   sum $ Map.map (\(MkData i f _) -> f * max 0 (rnd - distanceToAll i actors - 1)) remaining
   where
-    remaining = foldr (Map.delete) dataMap (Map.keys visMap)
+    remaining = foldr Map.delete dataMap (Map.keys visMap)
     distanceToAll i = minimum . map (distanceTo' i)
     distanceTo' i (_, MkData j _ _) = distanceTo i [(j, 0)] Map.empty
     distanceTo _ [] _ = error "unreachable"

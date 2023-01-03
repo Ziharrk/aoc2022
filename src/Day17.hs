@@ -5,7 +5,7 @@ module Day17 where
 import Data.Hashable (Hashable(..))
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
-import Data.Maybe (mapMaybe)
+import Data.Maybe (mapMaybe, fromMaybe)
 import Data.Tuple.Extra (snd3)
 import GHC.Generics (Generic)
 
@@ -82,7 +82,7 @@ simulateFor n layoutStart = towerSize . go layoutStart (take n rockOrder) 0
       Just (layout', rockShape') -> simulateMove layout' rockShape' ds used
 
     move d layout =
-      if all (/=Falli) (map getEnd layout)
+      if notElem Falli (map getEnd layout)
           && length allMoved == length layout
       then allMoved
       else layout
@@ -134,7 +134,7 @@ simulateWithMemo n cycleLength dat hmap profile used !acc
     Nothing -> simulateWithMemo (n-cycleLength) cycleLength dat hmap' profile' realUsed (acc + realHeight)
       where
         hmap' = HashMap.alter (Just . HashMap.insert profile (profile', realHeight, realUsed, cycleLength)
-                                    . maybe HashMap.empty id) used hmap
+                                    . fromMaybe HashMap.empty) used hmap
         realUsed = (used + used') `mod` length dat
         realHeight = height' - pred (length profile)
         (res, height', used') = simulateFor cycleLength profile (drop used (cycle dat))
@@ -149,10 +149,10 @@ simulateWithMemo n cycleLength dat hmap profile used !acc
           | otherwise                -> simulateWithMemo (n-reduced'-reduced'') cycleLength dat hmap'' profile'' used'' (acc + height' + height'')
             where
               hmap'' = HashMap.alter (Just . HashMap.insert profile (profile'', height' + height'', used'', reduced' + reduced'')
-                                           . maybe HashMap.empty id) used hmap
+                                           . fromMaybe HashMap.empty) used hmap
 
 getProfile :: Layout -> HeightProfile
-getProfile = (++ [replicate 7 Fixed]) . trim . take 80 . map (map unfill) . takeWhile (any (==Falli)) . floodfill (replicate 7 Falli)
+getProfile = (++ [replicate 7 Fixed]) . trim . take 80 . map (map unfill) . takeWhile (elem Falli) . floodfill (replicate 7 Falli)
   where
     unfill Fixed = Fixed
     unfill _     = Empty

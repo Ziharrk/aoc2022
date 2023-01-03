@@ -1,5 +1,3 @@
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE OverloadedRecordDot #-}
 module Day18 where
 
@@ -8,7 +6,7 @@ import Data.Hashable (Hashable(..))
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.List (groupBy)
-import Data.Maybe (catMaybes)
+import Data.Maybe (catMaybes, fromMaybe)
 import Data.Vector (Vector)
 import qualified Data.Vector as Vector
 import qualified Data.Vector.Mutable as MVector
@@ -61,18 +59,17 @@ lookupIdx :: Point -> Vector (Vector (Vector a)) -> Maybe a
 lookupIdx point v = (v Vector.!? point.x) >>= (Vector.!? point.y) >>= (Vector.!? point.z)
 
 setIndex :: Point -> a -> Vector (Vector (Vector a)) -> Vector (Vector (Vector a))
-setIndex point value =
-  \v0 -> (`Vector.modify` v0) $
+setIndex point value v0 = (`Vector.modify` v0) $
   \v1 -> flip (MVector.modify v1) point.x $
   \v2 -> (`Vector.modify` v2) $
   \v3 -> flip (MVector.modify v3) point.y $
   \v4 -> (`Vector.modify` v4) $
   \v5 -> flip (MVector.modify v5) point.z $
-  \_  -> value
+  const value
 
 update :: Hashable k => (HashMap k' a -> HashMap k' a) -> k
        -> HashMap k (HashMap k' a)  -> HashMap k (HashMap k' a)
-update f k mp = HashMap.alter (Just . f . maybe HashMap.empty id) k mp
+update f = HashMap.alter (Just . f . fromMaybe HashMap.empty)
 
 parsePoint :: String -> Point
 parsePoint xs = case groupBy (\a b -> a /= ',' && b /= ',') xs of

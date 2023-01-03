@@ -14,7 +14,7 @@ toPath = MkPath . map (toPoint . splitOn ",") . splitOn " -> "
     toPoint _      = error "Invalid path"
 
 initializeCave :: Int -> Int -> [Path] -> Vector (Vector Bool)
-initializeCave maxX maxY paths = foldr addPath clearCave paths
+initializeCave maxX maxY = foldr addPath clearCave
   where
     clearCave = Vector.replicate maxX $ Vector.replicate maxY False
     addPath (MkPath []) = id

@@ -37,8 +37,8 @@ bfsSimulation waypoints input = go 0 waypoints (S.singleton (1, 0)) input []
         possible x y =
           filter (\(x', y') -> x' >= 0 && x' <= maxX && y' >= 0 && y' <= maxY && isEmpty (x', y') newGrid)
           [(x, y), (x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
-        newGrid = foldr setIndexed emptyGrid $ V.ifoldr (\y' -> flip (V.ifoldr (collect y'))) [] grid
-        collect y x (Blizzard dirs) = (++ (map (check  . nextIndex (x, y)) dirs))
+        newGrid = foldr setIndexed emptyGrid $ V.ifoldr (flip . V.ifoldr . collect) [] grid
+        collect y x (Blizzard dirs) = (++ map (check  . nextIndex (x, y)) dirs)
         collect _  _  _             = id
         check (x, y, dir) = case getIndexed grid (x, y) of
           Just Wall -> (x + offsetX dir, y + offsetY dir, dir)

@@ -1,7 +1,7 @@
 module Day20 where
 
 import Control.Monad.ST (ST)
-import Data.List (findIndex)
+import Data.List (elemIndex)
 import qualified Data.Vector as V
 import qualified Data.Vector.Mutable as MV
 
@@ -34,7 +34,7 @@ day20 = do
   putStr "Part 1: "
   let atModulusIndex xs i = xs !! (i `mod` length xs)
   let res1 = mix 1 input
-  case findIndex (==0) res1 of
+  case elemIndex 0 res1 of
     Nothing  -> error "not found"
     Just idx -> do
       print (res1 `atModulusIndex` (idx + 1000) +
@@ -42,7 +42,7 @@ day20 = do
              res1 `atModulusIndex` (idx + 3000))
   putStr "Part 2: "
   let res2 = mix 10 (map (*811589153) input)
-  case findIndex (==0) res2 of
+  case elemIndex 0 res2 of
     Nothing  -> error "not found"
     Just idx -> do
       print (res2 `atModulusIndex` (idx + 1000) +

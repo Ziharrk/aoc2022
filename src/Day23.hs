@@ -30,12 +30,11 @@ simulateWithRound n rnd grid = if change
       _       -> (True, setCoord x' y' Elf $ setCoord x y Empty grid')
 
 setCoord :: Int -> Int -> a -> Vector (Vector a) -> Vector (Vector a)
-setCoord x y value =
-  \v0 -> (`V.modify` v0) $
+setCoord x y value v0 = (`V.modify` v0) $
   \v1 -> flip (MV.modify v1) y $
   \v2 -> (`V.modify` v2) $
   \v3 -> flip (MV.modify v3) x $
-  \_  -> value
+  const value
 
 atCoords :: Vector (Vector Tile) -> Int -> Int -> Maybe Tile
 atCoords grid x y = grid V.!? y >>= (V.!? x)
@@ -45,7 +44,7 @@ allEmpty grid = all (maybe True (==Empty). uncurry (atCoords grid))
 
 getStrategy :: Int -> Vector (Vector Tile) -> Int -> Int -> Maybe (Int, Int)
 getStrategy n grid x y =
-    let possible = filter (\coords -> allEmpty grid coords)
+    let possible = filter (allEmpty grid)
                         [strats !! i | off <- [0..3], let i = (off + n) `mod` 4]
     in  case possible of
             [] -> Nothing
@@ -93,14 +92,12 @@ day23 = do
     input <- lines <$> readFile "input/day23"
     let toTile '#' = Elf
         toTile _   = Empty
-        fromCoord x y = case input !? y >>= (!? x) of
-            Nothing -> Empty
-            Just c  -> toTile c
+        fromCoord x y = maybe Empty toTile (input !? y >>= (!? x))
         origX = length (head input)
         origY = length input
         halfDiffX = (sizeX - origX) `div` 2
         halfDiffY = (sizeY - origY) `div` 2
-        grid = V.generate sizeY $ (\y -> V.generate sizeX (\x ->  fromCoord (x - halfDiffX) (y - halfDiffY)))
+        grid = V.generate sizeY (\y -> V.generate sizeX (\x ->  fromCoord (x - halfDiffX) (y - halfDiffY)))
         grid' = simulate 10 grid
         (minX, minY, maxX, maxY) = boundedBox grid'
         emptyTiles = length $ [(x, y) | x <- [minX..maxX], y <- [minY..maxY], atCoords grid' x y == Just Empty]
